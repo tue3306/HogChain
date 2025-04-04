@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HogChain – Marketplace (Demonstração)</title>
+
+  <!-- Fonte e Ícones -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <!-- Chart.js para gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="marketplacestyles.css" />
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header class="main-header">
+    <div class="container">
+      <!-- Logomarca ABCs / HogChain -->
+      <div class="logo">
+        <img src="images/lobo-abcs.jpeg" alt="Logomarca ABCS" style="max-height: 50px; margin-right: 15px;">
+        <h1>HogChain Marketplace (Demonstração)</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Seção: Introdução -->
+  <section class="intro-section">
+    <div class="container">
+      <h2><i class="fas fa-info-circle"></i> Bem-vindo ao HogChain Marketplace</h2>
+      <p>Esta é uma demonstração interativa do HogChain Marketplace, uma plataforma que conecta produtores, abatedouros, fornecedores, investidores e reguladores na cadeia suinícola usando blockchain e HogCoins. Explore as seções abaixo para ver o que cada ator pode fazer!</p>
+    </div>
+  </section>
+
+  <!-- Seção: Produtores -->
+  <section class="produtores-section" id="produtores">
+    <div class="container">
+      <h2><i class="fas fa-tractor"></i> Para Produtores: Criar Ofertas de Suínos</h2>
+      <p>Produtores podem registrar lotes de suínos para venda, definindo quantidade, preço em HogCoins, data de entrega e detalhes adicionais como peso médio e certificações.</p>
+      <div class="form-criar-oferta">
+        <div class="form-group">
+          <label for="quantidade">Quantidade de Suínos</label>
+          <input type="number" id="quantidade" placeholder="Ex.: 1000" required>
+        </div>
+        <div class="form-group">
+          <label for="preco-porco">Preço por Suíno (HogCoins)</label>
+          <input type="number" id="preco-porco" placeholder="Ex.: 10" required>
+        </div>
+        <div class="form-group">
+          <label for="peso-medio">Peso Médio por Suíno (kg)</label>
+          <input type="number" id="peso-medio" placeholder="Ex.: 120" required>
+        </div>
+        <div class="form-group">
+          <label for="certificacao">Certificação (Opcional)</label>
+          <input type="text" id="certificacao" placeholder="Ex.: Orgânico, Bem-Estar Animal">
+        </div>
+        <div class="form-group">
+          <label for="data-entrega">Data de Entrega</label>
+          <input type="date" id="data-entrega" required>
+        </div>
+        <button class="btn-enviar-oferta" onclick="criarOferta()">
+          <i class="fas fa-plus"></i> Criar Oferta
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Abatedouros -->
+  <section class="abatedouros-section" id="abatedouros">
+    <div class="container">
+      <h2><i class="fas fa-shopping-cart"></i> Para Abatedouros: Comprar, Negociar e Liquidar Contratos</h2>
+      <p>Abatedouros podem visualizar ofertas de suínos, negociar preços, comprá-las e liquidar contratos após a entrega.</p>
+      <div class="search-filter">
+        <input type="text" id="search-oferta" placeholder="Pesquisar por Oferta" onkeyup="filterOfertas()">
+        <select id="filter-status-oferta" onchange="filterOfertas()">
+          <option value="">Filtrar por Status</option>
+          <option value="disponivel">Disponível</option>
+          <option value="em-negociacao">Em Negociação</option>
+          <option value="comprada">Comprada</option>
+          <option value="liquidada">Liquidada</option>
+        </select>
+      </div>
+      <div class="ofertas-container" id="ofertas-container">
+        <!-- Ofertas serão adicionadas dinamicamente -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Fornecedores -->
+  <section class="fornecedores-section" id="fornecedores">
+    <div class="container">
+      <h2><i class="fas fa-box-open"></i> Para Fornecedores: Gerenciar Insumos e Receber Pagamentos</h2>
+      <p>Fornecedores podem oferecer insumos (ração, medicamentos, etc.), acompanhar pedidos e receber pagamentos em HogCoins.</p>
+      <div class="form-criar-insumo">
+        <div class="form-group">
+          <label for="tipo-insumo">Tipo de Insumo</label>
+          <select id="tipo-insumo" required>
+            <option value="">Selecione</option>
+            <option value="ração">Ração</option>
+            <option value="medicamentos">Medicamentos</option>
+            <option value="equipamentos">Equipamentos</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quantidade-insumo">Quantidade</label>
+          <input type="number" id="quantidade-insumo" placeholder="Ex.: 500" required>
+        </div>
+        <div class="form-group">
+          <label for="preco-insumo">Preço por Unidade (HogCoins)</label>
+          <input type="number" id="preco-insumo" placeholder="Ex.: 2" required>
+        </div>
+        <button class="btn-enviar-insumo" onclick="criarInsumo()">
+          <i class="fas fa-plus"></i> Adicionar Insumo
+        </button>
+      </div>
+      <div class="insumos-container" id="insumos-container">
+        <!-- Insumos serão adicionados dinamicamente -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Investidores -->
+  <section class="investidores-section" id="investidores">
+    <div class="container">
+      <h2><i class="fas fa-coins"></i> Para Investidores: Acompanhar o Mercado de HogCoins</h2>
+      <p>Investidores podem monitorar o preço da HogCoin, volume de transações e tendências de mercado em tempo real.</p>
+      <div class="hogcoin-stats">
+        <div class="hogcoin-card">
+          <i class="fas fa-coins"></i>
+          <h3>Valor Atual</h3>
+          <p id="current-price">1 HogCoin = R$ 74,50</p>
+        </div>
+        <div class="hogcoin-card">
+          <i class="fas fa-percentage"></i>
+          <h3>Variação (180 dias)</h3>
+          <p id="variation">-7,5%</p>
+        </div>
+        <div class="hogcoin-card">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Volume (24h)</h3>
+          <p id="volume">15.230 HogCoins</p>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="hogcoinChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Reguladores -->
+  <section class="reguladores-section" id="reguladores">
+    <div class="container">
+      <h2><i class="fas fa-history"></i> Para Reguladores: Rastrear Transações e Feedback</h2>
+      <p>Reguladores podem acompanhar todas as transações na blockchain e revisar feedback para garantir transparência e conformidade.</p>
+      <div class="historico-container" id="historico-container">
+        <!-- Histórico será adicionado dinamicamente -->
+      </div>
+    </div>
+  </section>
+
+    <!-- Scripts -->
+    <script>
+      // Dados iniciais do gráfico
+      let priceData = {
+        labels: Array.from({length: 180}, (_, i) => `Dia ${180 - i}`),
+        reference: Array.from({length: 180}, (_, i) => 80 - (i * 0.0333)),
+        negotiated: Array.from({length: 180}, (_, i) => 80 - (i * 0.035)),
+        volume: Array.from({length: 180}, (_, i) => Math.random() * 1000 + 5000),
+      };
+  
+      // Configuração do gráfico
+      const ctx = document.getElementById('hogcoinChart').getContext('2d');
+      const hogcoinChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: priceData.labels,
+          datasets: [
+            {
+              label: 'Preço Referência',
+              data: priceData.reference,
+              borderColor: '#1a3c6d',
+              fill: false,
+              tension: 0.1
+            },
+            {
+              label: 'Preço Negociado',
+              data: priceData.negotiated,
+              borderColor: '#ff5733',
+              fill: false,
+              tension: 0.1
+            },
+            {
+              label: 'Volume de Transações',
+              data: priceData.volume,
+              borderColor: '#2e7d32',
+              fill: false,
+              tension: 0.1,
+              yAxisID: 'y1',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: false,
+              title: { display: true, text: 'Preço (R$)' },
+              min: 60,
+              max: 90
+            },
+            y1: {
+              position: 'right',
+              beginAtZero: true,
+              title: { display: true, text: 'Volume (HogCoins)' },
+              min: 0,
+              max: 10000,
+              grid: { drawOnChartArea: false }
+            },
+            x: {
+              title: { display: true, text: 'Dias de Vencimento' }
+            }
+          },
+          plugins: {
+            tooltip: { mode: 'index', intersect: false },
+            legend: { position: 'top' }
+          }
+        }
+      });
+  
+      // Valores iniciais estáticos exibidos no HTML
+      document.getElementById('current-price').textContent = `1 HogCoin = R$ 74,50`;
+      document.getElementById('variation').textContent = `-7,5%`;
+      document.getElementById('volume').textContent = `15.230 HogCoins`;
+  
+    // Função para criar oferta (Produtores)
+    let ofertaId = 1;
+    function criarOferta() {
+      const quantidade = document.getElementById('quantidade').value;
+      const precoPorco = document.getElementById('preco-porco').value;
+      const pesoMedio = document.getElementById('peso-medio').value;
+      const certificacao = document.getElementById('certificacao').value || 'Nenhuma';
+      const dataEntrega = document.getElementById('data-entrega').value;
+
+      if (!quantidade || !precoPorco || !pesoMedio || !dataEntrega) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      const totalHogCoins = quantidade * precoPorco;
+      const ofertaCard = `
+        <div class="oferta-card" data-id="oferta-${ofertaId}">
+          <div class="oferta-header">
+            <h3>Oferta ${ofertaId} - Produtor</h3>
+            <span class="status disponivel"><i class="fas fa-tag"></i> Disponível</span>
+          </div>
+          <p><i class="fas fa-piggy-bank"></i> Quantidade: ${quantidade} suínos</p>
+          <p><i class="fas fa-weight"></i> Peso Médio: ${pesoMedio} kg</p>
+          <p><i class="fas fa-certificate"></i> Certificação: ${certificacao}</p>
+          <p><i class="fas fa-coins"></i> Preço por Suíno: ${precoPorco} HogCoins</p>
+          <p><i class="fas fa-money-bill-wave"></i> Total: ${totalHogCoins} HogCoins</p>
+          <p><i class="fas fa-calendar-alt"></i> Data de Entrega: ${dataEntrega}</p>
+          <div class="oferta-actions">
+            <button class="btn-negociar" onclick="negociarOferta(this, 'Oferta ${ofertaId}', ${precoPorco}, ${quantidade}, ${totalHogCoins})">
+              <i class="fas fa-handshake"></i> Negociar
+            </button>
+            <button class="btn-comprar" onclick="comprarOferta(this, 'Oferta ${ofertaId}', ${totalHogCoins})">
+              <i class="fas fa-cart-plus"></i> Comprar
+            </button>
+            <button class="btn-detalhes" onclick="showOfertaDetails('Oferta ${ofertaId}', 'Produtor', 'Nenhum fornecedor vinculado', 'Nenhum abatedouro', '${quantidade} suínos', '${pesoMedio} kg', '${certificacao}', '${totalHogCoins} HogCoins', '${dataEntrega}')">
+              <i class="fas fa-eye"></i> Ver Detalhes
+            </button>
+          </div>
+        </div>
+      `;
+      document.getElementById('ofertas-container').insertAdjacentHTML('beforeend', ofertaCard);
+
+      addToHistorico(`Oferta ${ofertaId} criada: ${quantidade} suínos por ${totalHogCoins} HogCoins.`);
+      ofertaId++;
+    }
+
+    // Função para negociar oferta (Abatedouros)
+    function negociarOferta(button, oferta, precoPorco, quantidade, totalHogCoins) {
+      const novoPreco = prompt(`Digite o novo preço por suíno (atual: ${precoPorco} HogCoins):`, precoPorco);
+      if (novoPreco && !isNaN(novoPreco) && novoPreco > 0) {
+        const novoTotal = quantidade * novoPreco;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Negociando...';
+        button.disabled = true;
+        setTimeout(() => {
+          button.innerHTML = '<i class="fas fa-handshake"></i> Negociado!';
+          button.style.backgroundColor = '#ff9800';
+          const statusSpan = button.closest('.oferta-card').querySelector('.status');
+          statusSpan.innerHTML = '<i class="fas fa-handshake"></i> Em Negociação';
+          statusSpan.className = 'status em-negociacao';
+          button.parentElement.innerHTML = `
+            <button class="btn-comprar" onclick="comprarOferta(this, '${oferta}', ${novoTotal})">
+              <i class="fas fa-cart-plus"></i> Comprar por ${novoTotal} HogCoins
+            </button>
+            <button class="btn-detalhes" onclick="showOfertaDetails('${oferta}', 'Produtor', 'Nenhum fornecedor vinculado', 'Abatedouro', '${quantidade} suínos', '${button.closest('.oferta-card').querySelector('p:nth-child(3)').textContent.split(': ')[1]}', '${button.closest('.oferta-card').querySelector('p:nth-child(4)').textContent.split(': ')[1]}', '${novoTotal} HogCoins', '${button.closest('.oferta-card').querySelector('p:nth-child(7)').textContent.split(': ')[1]}')">
+              <i class="fas fa-eye"></i> Ver Detalhes
+            </button>
+          `;
+          addToHistorico(`${oferta} em negociação: Novo preço de ${novoPreco} HogCoins por suíno, total ${novoTotal} HogCoins.`);
+        }, 1500);
+      } else {
+        alert('Por favor, insira um preço válido.');
+      }
+    }
+
+    // Função para comprar oferta (Abatedouros)
+    function comprarOferta(button, oferta, totalHogCoins) {
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+      button.disabled = true;
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-check-circle"></i> Comprado!';
+        button.style.backgroundColor = '#2e7d32';
+        const statusSpan = button.closest('.oferta-card').querySelector('.status');
+        statusSpan.innerHTML = '<i class="fas fa-check-circle"></i> Comprada';
+        statusSpan.className = 'status comprada';
+        button.parentElement.innerHTML = `
+          <button class="btn-liquidar" onclick="liquidarContrato(this, '${oferta}', ${totalHogCoins})">
+            <i class="fas fa-check"></i> Liquidar Contrato
+          </button>
+          <button class="btn-feedback" onclick="darFeedback('${oferta}')">
+            <i class="fas fa-star"></i> Dar Feedback
+          </button>
+          <button class="btn-detalhes" onclick="showOfertaDetails('${oferta}', 'Produtor', 'Nenhum fornecedor vinculado', 'Abatedouro', '${button.closest('.oferta-card').querySelector('p:nth-child(2)').textContent.split(': ')[1]}', '${button.closest('.oferta-card').querySelector('p:nth-child(3)').textContent.split(': ')[1]}', '${button.closest('.oferta-card').querySelector('p:nth-child(4)').textContent.split(': ')[1]}', '${totalHogCoins} HogCoins', '${button.closest('.oferta-card').querySelector('p:nth-child(7)').textContent.split(': ')[1]}')">
+            <i class="fas fa-eye"></i> Ver Detalhes
+          </button>
+        `;
+        addToHistorico(`${oferta} comprada por Abatedouro: ${totalHogCoins} HogCoins geradas.`);
+      }, 1500);
+    }
+
+    // Função para liquidar contrato (Abatedouros)
+    function liquidarContrato(button, oferta, totalHogCoins) {
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+      button.disabled = true;
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-check-circle"></i> Liquidado!';
+        button.style.backgroundColor = '#1a3c6d';
+        const statusSpan = button.closest('.oferta-card').querySelector('.status');
+        statusSpan.innerHTML = '<i class="fas fa-check-circle"></i> Liquidada';
+        statusSpan.className = 'status liquidada';
+        button.parentElement.innerHTML = `
+          <button class="btn-feedback" onclick="darFeedback('${oferta}')">
+            <i class="fas fa-star"></i> Dar Feedback
+          </button>
+          <button class="btn-detalhes" onclick="showOfertaDetails('${oferta}', 'Produtor', 'Nenhum fornecedor vinculado', 'Abatedouro', '${button.closest('.oferta-card').querySelector('p:nth-child(2)').textContent.split(': ')[1]}', '${button.closest('.oferta-card').querySelector('p:nth-child(3)').textContent.split(': ')[1]}', '${button.closest('.oferta-card').querySelector('p:nth-child(4)').textContent.split(': ')[1]}', '${totalHogCoins} HogCoins', '${button.closest('.oferta-card').querySelector('p:nth-child(7)').textContent.split(': ')[1]}')">
+            <i class="fas fa-eye"></i> Ver Detalhes
+          </button>
+        `;
+        addToHistorico(`${oferta} liquidada: ${totalHogCoins} HogCoins quitadas.`);
+      }, 1500);
+    }
+
+    // Função para criar insumo (Fornecedores)
+    let insumoId = 1;
+    function criarInsumo() {
+      const tipoInsumo = document.getElementById('tipo-insumo').value;
+      const quantidadeInsumo = document.getElementById('quantidade-insumo').value;
+      const precoInsumo = document.getElementById('preco-insumo').value;
+
+      if (!tipoInsumo || !quantidadeInsumo || !precoInsumo) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      const totalHogCoins = quantidadeInsumo * precoInsumo;
+      const insumoCard = `
+        <div class="insumo-card" data-id="insumo-${insumoId}">
+          <div class="insumo-header">
+            <h3>Insumo ${insumoId} - ${tipoInsumo}</h3>
+            <span class="status disponivel"><i class="fas fa-tag"></i> Disponível</span>
+          </div>
+          <p><i class="fas fa-box"></i> Quantidade: ${quantidadeInsumo} unidades</p>
+          <p><i class="fas fa-coins"></i> Preço por Unidade: ${precoInsumo} HogCoins</p>
+          <p><i class="fas fa-money-bill-wave"></i> Total: ${totalHogCoins} HogCoins</p>
+          <div class="insumo-actions">
+            <button class="btn-comprar-insumo" onclick="comprarInsumo(this, 'Insumo ${insumoId}', '${tipoInsumo}', ${totalHogCoins})">
+              <i class="fas fa-cart-plus"></i> Comprar
+            </button>
+          </div>
+        </div>
+      `;
+      document.getElementById('insumos-container').insertAdjacentHTML('beforeend', insumoCard);
+
+      addToHistorico(`Insumo ${insumoId} (${tipoInsumo}) criado: ${quantidadeInsumo} unidades por ${totalHogCoins} HogCoins.`);
+      insumoId++;
+    }
+
+    // Função para comprar insumo (Produtores)
+    function comprarInsumo(button, insumo, tipoInsumo, totalHogCoins) {
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+      button.disabled = true;
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-check-circle"></i> Comprado!';
+        button.style.backgroundColor = '#2e7d32';
+        const statusSpan = button.closest('.insumo-card').querySelector('.status');
+        statusSpan.innerHTML = '<i class="fas fa-check-circle"></i> Vendido';
+        statusSpan.className = 'status vendido';
+        button.parentElement.innerHTML = `
+          <button class="btn-feedback" onclick="darFeedback('${insumo}')">
+            <i class="fas fa-star"></i> Dar Feedback
+          </button>
+        `;
+        addToHistorico(`${insumo} (${tipoInsumo}) comprado: ${totalHogCoins} HogCoins transferidos.`);
+      }, 1500);
+    }
+
+    // Função para filtrar ofertas (Abatedouros)
+    function filterOfertas() {
+      const searchValue = document.getElementById('search-oferta').value.toLowerCase();
+      const statusValue = document.getElementById('filter-status-oferta').value.toLowerCase();
+      const cards = document.querySelectorAll('.oferta-card');
+
+      cards.forEach(card => {
+        const ofertaNome = card.querySelector('.oferta-header h3').textContent.toLowerCase();
+        const status = card.querySelector('.status').textContent.toLowerCase();
+
+        const matchesSearch = ofertaNome.includes(searchValue);
+        const matchesStatus = statusValue === '' || status.includes(statusValue);
+
+        if (matchesSearch && matchesStatus) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Função para ver detalhes
+    function showOfertaDetails(oferta, produtor, fornecedores, abatedouro, quantidade, pesoMedio, certificacao, total, dataEntrega) {
+      alert(`Detalhes do Contrato:\n- Oferta: ${oferta}\n- Produtor: ${produtor}\n- Fornecedores: ${fornecedores}\n- Abatedouro: ${abatedouro}\n- Quantidade: ${quantidade}\n- Peso Médio: ${pesoMedio}\n- Certificação: ${certificacao}\n- Total: ${total}\n- Data de Entrega: ${dataEntrega}`);
+    }
+
+    // Função para dar feedback
+    function darFeedback(item) {
+      const rating = prompt(`Dê uma nota de 1 a 5 para ${item}:`, '5');
+      const comentario = prompt(`Deixe um comentário sobre ${item}:`, 'Ótima transação!');
+      if (rating && comentario && !isNaN(rating) && rating >= 1 && rating <= 5) {
+        const feedbackItem = `
+          <div class="feedback-item">
+            <p><i class="fas fa-star"></i> ${item} - Avaliação: ${rating}/5 - "${comentario}" - ${new Date().toLocaleString()}</p>
+          </div>
+        `;
+        document.getElementById('historico-container').insertAdjacentHTML('beforeend', feedbackItem);
+        addToHistorico(`Feedback registrado para ${item}: ${rating}/5 - "${comentario}".`);
+      } else {
+        alert('Por favor, insira uma nota válida (1 a 5) e um comentário.');
+      }
+    }
+
+    // Função para adicionar ao histórico (Reguladores)
+    function addToHistorico(mensagem) {
+      const historicoItem = `
+        <div class="historico-item">
+          <p><i class="fas fa-history"></i> ${mensagem} - ${new Date().toLocaleString()}</p>
+        </div>
+      `;
+      document.getElementById('historico-container').insertAdjacentHTML('beforeend', historicoItem);
+    }
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92a30c0d2ea9bfe2',t:'MTc0MzYyNTQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

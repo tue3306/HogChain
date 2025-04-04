@@ -1,0 +1,173 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #28a745 100%); /* Gradiente moderno */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Container principal do login */
+.login-container {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Logo e Título */
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.titulo {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1e3c72; /* Cor que remete à tecnologia */
+}
+
+/* Slogan */
+.slogan {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+/* Título do formulário */
+.login-container h2 {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    font-weight: 400;
+    color: #333;
+}
+
+/* Estilização dos campos de texto */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s ease-in, box-shadow 0.2s ease-in;
+}
+
+.input-group input:focus {
+    border-color: #1e3c72;
+    box-shadow: 0 0 5px rgba(30, 60, 114, 0.2);
+}
+
+/* Feedback visual para erros */
+.input-group input.error {
+    border-color: #e74c3c;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.2);
+}
+
+/* Link "Esqueceu sua senha?" */
+.forgot-password {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.forgot-password a {
+    font-size: 0.85rem;
+    color: #1e3c72;
+    text-decoration: none;
+    transition: color 0.2s ease-in;
+}
+
+.forgot-password a:hover {
+    color: #2a5298;
+    text-decoration: underline;
+}
+
+/* Botão de login */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    color: #fff;
+    background: #1e3c72;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease-in;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-login:hover {
+    background: #2a5298;
+}
+
+.btn-login:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Spinner */
+.spinner {
+    display: none;
+}
+
+/* Mensagem de erro */
+.mensagem-erro {
+    margin-top: 15px;
+    color: #e74c3c;
+    font-size: 0.9rem;
+}
+
+/* Link "Criar Conta" */
+.register-link {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.register-link a {
+    color: #1e3c72;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease-in;
+}
+
+.register-link a:hover {
+    color: #2a5298;
+    text-decoration: underline;
+}

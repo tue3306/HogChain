@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Produtor - HogChain</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="dashboard_produtorstyles.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h2>HogChain</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        <li><a href="#carteira-hogcoins" class="active"><i class="fas fa-coins"></i> Carteira HogCoins</a></li>
+        <li><a href="#producao"><i class="fas fa-tractor"></i> Produção Atual</a></li>
+        <li><a href="#vendas"><i class="fas fa-handshake"></i> Vendas</a></li>
+        <li><a href="#marketplace"><i class="fas fa-store"></i> Marketplace</a></li>
+        <li><a href="#mensagens"><i class="fas fa-comments"></i> Mensagens <span class="badge">2</span></a></li>
+        <li><a href="#assinatura-contrato"><i class="fas fa-signature"></i> Gerenciar Contratos</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <h1>Dashboard Produtor - HogChain</h1>
+      <p>Gerencie sua produção, vendas e transações em HogCoin de forma eficiente e transparente.</p>
+    </header>
+  
+    <section class="dashboard-section" id="carteira-hogcoins">
+      <h2><i class="fas fa-coins"></i> Carteira HogCoins</h2>
+      <p>Visualize seu saldo, variação de preço e histórico de transações em HogCoin, o token principal da plataforma.</p>
+      <div class="carteira-resumo">
+        <div class="carteira-total">
+          <h3>Saldo Atual</h3>
+          <p><i class="fas fa-coins"></i> 250 HogCoins</p>
+        </div>
+        <div class="carteira-total">
+          <h3>Variação de Preço (30 dias)</h3>
+          <p><i class="fas fa-chart-line"></i> +4.8%</p>
+        </div>
+        <div class="carteira-total">
+          <h3>Entrada Total (Mês)</h3>
+          <p><i class="fas fa-arrow-up"></i> 300 HogCoins</p>
+        </div>
+        <div class="carteira-total">
+          <h3>Saída Total (Mês)</h3>
+          <p><i class="fas fa-arrow-down"></i> 50 HogCoins</p>
+        </div>
+      </div>
+      <div class="historico-container" id="historico-container">
+        <h3>Histórico de Transações</h3>
+        <div class="historico-item">
+          <p><i class="fas fa-arrow-up"></i> Recebido: 150 HogCoins do Abatedouro Z - 25/03/2025</p>
+          <span class="blockchain-selo"><i class="fas fa-lock"></i> Registrado na Blockchain</span>
+        </div>
+        <div class="historico-item">
+          <p><i class="fas fa-arrow-up"></i> Recebido: 100 HogCoins do Frigorífico Aurora - 28/03/2025</p>
+          <span class="blockchain-selo"><i class="fas fa-lock"></i> Registrado na Blockchain</span>
+        </div>
+        <div class="historico-item">
+          <p><i class="fas fa-arrow-down"></i> Enviado: 50 HogCoins para Fornecedor X - 30/03/2025</p>
+          <span class="blockchain-selo"><i class="fas fa-lock"></i> Registrado na Blockchain</span>
+        </div>
+      </div>
+      <div class="carteira-chart">
+        <h3>Variação de Preço (3 meses)</h3>
+        <canvas id="hogcoin-price-chart" style="max-height: 200px;"></canvas>
+      </div>
+      <button class="btn-enviar-hogcoin" onclick="openEnviarHogCoinModal()"><i class="fas fa-arrow-right"></i> Enviar HogCoins</button>
+    </section>
+
+    <div class="notificacao-container">
+      <div class="notificacao-item critico">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Produção Crítica: Lote #P003 - Apenas 10 suínos restantes!</p>
+      </div>
+      <div class="notificacao-item baixo">
+        <i class="fas fa-exclamation-circle"></i>
+        <p>Estoque Baixo: Ração - Apenas 50 sacas restantes!</p>
+      </div>
+    </div>
+  
+    <section class="dashboard-section" id="producao">
+      <h2><i class="fas fa-tractor"></i> Produção Atual</h2>
+      <p>Monitore seus lotes de suínos em produção e o status atual.</p>
+      <div class="search-filter">
+        <input type="text" id="search-producao" placeholder="Pesquisar por Lote" onkeyup="filterProducao()">
+        <select id="filter-status-producao" onchange="filterProducao()">
+          <option value="">Filtrar por Status</option>
+          <option value="Em Andamento">Em Andamento</option>
+          <option value="Pronto">Pronto para Venda</option>
+        </select>
+      </div>
+      <div class="producao-container" id="producao-container">
+        <div class="producao-item">
+          <h3>Lote #P001</h3>
+          <p><i class="fas fa-piggy-bank"></i> Quantidade: 50 suínos</p>
+          <p><i class="fas fa-calendar-alt"></i> Início: 01/02/2025</p>
+          <p><i class="fas fa-clock"></i> Status: <span class="producao-status em-andamento">Em Andamento</span></p>
+        </div>
+        <div class="producao-item">
+          <h3>Lote #P002</h3>
+          <p><i class="fas fa-piggy-bank"></i> Quantidade: 30 suínos</p>
+          <p><i class="fas fa-calendar-alt"></i> Início: 15/02/2025</p>
+          <p><i class="fas fa-clock"></i> Status: <span class="producao-status pronto">Pronto para Venda</span></p>
+        </div>
+        <div class="producao-item">
+          <h3>Lote #P003</h3>
+          <p><i class="fas fa-piggy-bank"></i> Quantidade: 10 suínos</p>
+          <p><i class="fas fa-calendar-alt"></i> Início: 01/03/2025</p>
+          <p><i class="fas fa-clock"></i> Status: <span class="producao-status em-andamento">Em Andamento</span></p>
+        </div>
+      </div>
+      <div class="producao-charts">
+        <canvas id="producao-chart" style="max-height: 300px;"></canvas>
+      </div>
+      <button class="btn-atualizar-producao" onclick="openAtualizarProducaoModal()"><i class="fas fa-sync-alt"></i> Atualizar Produção</button>
+    </section>
+  
+    <section class="dashboard-section" id="vendas">
+      <h2><i class="fas fa-handshake"></i> Vendas</h2>
+      <p>Gerencie suas vendas de suínos, pagas em HogCoin.</p>
+      <div class="search-filter">
+        <input type="text" id="search-vendas" placeholder="Pesquisar por Cliente ou ID" onkeyup="filterVendas()">
+        <select id="filter-status-vendas" onchange="filterVendas()">
+          <option value="">Filtrar por Status</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Concluída">Concluída</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+      </div>
+      <div class="vendas-container">
+        <table class="vendas-table" id="vendas-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Lote</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#V001</td>
+              <td>Abatedouro Z</td>
+              <td>Lote #P002</td>
+              <td>30 suínos</td>
+              <td>150 HogCoins</td>
+              <td><span class="status pendente">Pendente de Pagamento</span></td>
+              <td class="action-buttons">
+                <button class="btn-confirmar" onclick="confirmarVenda(this, 'V001')"><i class="fas fa-check"></i> Confirmar</button>
+                <button class="btn-cancelar" onclick="cancelarVenda(this, 'V001')"><i class="fas fa-times"></i> Cancelar</button>
+                <button class="btn-detalhes" onclick="showVendaDetails(this)"><i class="fas fa-eye"></i> Ver Detalhes</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#V002</td>
+              <td>Frigorífico Aurora</td>
+              <td>Lote #P001</td>
+              <td>20 suínos</td>
+              <td>100 HogCoins</td>
+              <td><span class="status concluida">Concluída</span> <span class="blockchain-selo"><i class="fas fa-lock"></i> Registrado na Blockchain</span></td>
+              <td class="action-buttons">
+                <button class="btn-detalhes" onclick="showVendaDetails(this)"><i class="fas fa-eye"></i> Ver Detalhes</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  
+    <section class="dashboard-section" id="marketplace">
+      <h2><i class="fas fa-store"></i> Marketplace</h2>
+      <p>Compre insumos ou venda suínos diretamente no marketplace usando HogCoins.</p>
+      <div class="search-filter">
+        <input type="text" id="search-marketplace" placeholder="Buscar no Marketplace..." onkeyup="filterMarketplace()">
+        <select id="filter-categoria-marketplace" onchange="filterMarketplace()">
+          <option value="">Filtrar por Categoria</option>
+          <option value="Insumos">Insumos</option>
+          <option value="Suínos">Suínos</option>
+        </select>
+      </div>
+      <div class="marketplace-container">
+        <table class="marketplace-table" id="marketplace-table">
+          <thead>
+            <tr>
+              <th>ID Oferta</th>
+              <th>Item</th>
+              <th>Quantidade</th>
+              <th>Valor em HogCoins</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#MKT-01</td>
+              <td>Ração</td>
+              <td>100 sacas</td>
+              <td>20 HogCoins</td>
+              <td><span class="status disponivel">Disponível</span></td>
+              <td><button class="btn-comprar" onclick="comprarItem('Ração', 20)"><i class="fas fa-shopping-cart"></i> Comprar</button></td>
+            </tr>
+            <tr>
+              <td>#MKT-02</td>
+              <td>Lote #P002</td>
+              <td>30 suínos</td>
+              <td>150 HogCoins</td>
+              <td><span class="status disponivel">Disponível</span></td>
+              <td><button class="btn-detalhes" onclick="showMarketplaceDetails(this)"><i class="fas fa-eye"></i> Ver Detalhes</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  
+    <section class="dashboard-section" id="mensagens">
+      <h2><i class="fas fa-comments"></i> Mensagens</h2>
+      <div class="search-filter">
+        <input type="text" id="search-mensagem" placeholder="Pesquisar por Remetente" onkeyup="filterMensagens()">
+        <select id="filter-status-mensagem" onchange="filterMensagens()">
+          <option value="">Filtrar por Status</option>
+          <option value="unread">Não Lidas</option>
+          <option value="read">Lidas</option>
+        </select>
+      </div>
+      <div class="mensagens-container" id="mensagens-container">
+        <div class="mensagem-item unread">
+          <div class="mensagem-header">
+            <h4>Abatedouro Z</h4>
+            <span class="mensagem-data">Hoje, 09:30</span>
+          </div>
+          <p>Confirmamos o interesse no Lote #P002. Podemos fechar por 150 HogCoins?</p>
+          <button class="btn-responder" onclick="openResponderModal(this, 'Abatedouro Z')"><i class="fas fa-reply"></i> Responder</button>
+        </div>
+        <div class="mensagem-item unread">
+          <div class="mensagem-header">
+            <h4>Fornecedor X</h4>
+            <span class="mensagem-data">Hoje, 11:15</span>
+          </div>
+          <p>A ração está pronta para envio. Confirma o pagamento de 20 HogCoins?</p>
+          <button class="btn-responder" onclick="openResponderModal(this, 'Fornecedor X')"><i class="fas fa-reply"></i> Responder</button>
+        </div>
+        <div class="mensagem-item">
+          <div class="mensagem-header">
+            <h4>Frigorífico Aurora</h4>
+            <span class="mensagem-data">Ontem, 14:00</span>
+          </div>
+          <p>Pagamento de 100 HogCoins pelo Lote #P001 concluído!</p>
+          <button class="btn-responder" onclick="openResponderModal(this, 'Frigorífico Aurora')"><i class="fas fa-reply"></i> Responder</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-section" id="assinatura-contrato">
+      <h2><i class="fas fa-signature"></i> Gerenciar Contratos</h2>
+      <p>Gerencie contratos assinados digitalmente com abatedouros e receba HogCoins conforme acordado.</p>
+      <div class="search-filter">
+        <input type="text" id="search-contrato" placeholder="Pesquisar por Abatedouro" onkeyup="filterContratos()">
+        <select id="filter-status-contrato" onchange="filterContratos()">
+          <option value="">Filtrar por Status</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Assinado">Assinado</option>
+        </select>
+      </div>
+      <div class="contratos-container" id="contratos-assinatura-container">
+        <div class="contrato-card">
+          <div class="contrato-header">
+            <h3>Contrato #C001</h3>
+            <span class="status pendente"><i class="fas fa-hourglass-half"></i> Pendente</span>
+          </div>
+          <p><i class="fas fa-user"></i> Abatedouro: Abatedouro Z</p>
+          <p><i class="fas fa-piggy-bank"></i> Quantidade: 500 suínos</p>
+          <p><i class="fas fa-coins"></i> Valor Total: 2500 HogCoins</p>
+          <div class="form-group">
+            <label><input type="checkbox" name="travar-hogcoins" checked> Confirmar entrega antes do pagamento</label>
+          </div>
+          <div class="contrato-actions">
+            <button class="btn-assinar" onclick="assinarContrato(this, 'Contrato #C001')">
+              <i class="fas fa-signature"></i> Assinar
+            </button>
+            <button class="btn-historico" onclick="showContratoHistorico(this)">
+              <i class="fas fa-history"></i> Histórico
+            </button>
+          </div>
+        </div>
+        <div class="contrato-card">
+          <div class="contrato-header">
+            <h3>Contrato #C002</h3>
+            <span class="status assinado"><i class="fas fa-check-circle"></i> Assinado</span>
+          </div>
+          <p><i class="fas fa-user"></i> Abatedouro: Abatedouro Sul</p>
+          <p><i class="fas fa-piggy-bank"></i> Quantidade: 1000 suínos</p>
+          <p><i class="fas fa-coins"></i> Valor Total: 5000 HogCoins</p>
+          <div class="contrato-actions">
+            <button class="btn-historico" onclick="showContratoHistorico(this)">
+              <i class="fas fa-history"></i> Histórico
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-novo-contrato" onclick="openNovoContratoModal()">
+        <i class="fas fa-plus"></i> Novo Contrato
+      </button>
+    </section>
+  </main>
+
+  <div class="modal" id="responder-modal">
+    <div class="modal-content">
+      <h3 id="responder-modal-title">Responder Mensagem</h3>
+      <form id="responder-form" onsubmit="enviarResposta(event)">
+        <div class="form-group">
+          <label for="responder-destinatario">Destinatário</label>
+          <input type="text" id="responder-destinatario" readonly>
+        </div>
+        <div class="form-group">
+          <label for="responder-mensagem">Mensagem</label>
+          <textarea id="responder-mensagem" rows="4" required placeholder="Digite sua resposta"></textarea>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancelar" onclick="closeModal('responder-modal')">Cancelar</button>
+          <button type="submit" class="btn-salvar"><i class="fas fa-paper-plane"></i> Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="atualizar-producao-modal">
+    <div class="modal-content">
+      <h3>Atualizar Produção</h3>
+      <form id="atualizar-producao-form" onsubmit="atualizarProducao(event)">
+        <div class="form-group">
+          <label for="lote-producao">Lote</label>
+          <select id="lote-producao" name="lote-producao" required>
+            <option value="">Selecione um lote</option>
+            <option value="Lote #P001">Lote #P001</option>
+            <option value="Lote #P002">Lote #P002</option>
+            <option value="Lote #P003">Lote #P003</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quantidade-producao">Quantidade Atual</label>
+          <input type="number" id="quantidade-producao" name="quantidade-producao" placeholder="Digite a quantidade" min="1" required />
+        </div>
+        <div class="form-group">
+          <label for="status-producao">Status</label>
+          <select id="status-producao" name="status-producao" required>
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Pronto">Pronto para Venda</option>
+          </select>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancelar" onclick="closeModal('atualizar-producao-modal')">Cancelar</button>
+          <button type="submit" class="btn-salvar"><i class="fas fa-save"></i> Atualizar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="enviar-hogcoin-modal">
+    <div class="modal-content">
+      <h3>Enviar HogCoins</h3>
+      <form id="enviar-hogcoin-form" onsubmit="enviarHogCoins(event)">
+        <div class="form-group">
+          <label for="destinatario-hogcoin">Destinatário</label>
+          <select id="destinatario-hogcoin" name="destinatario-hogcoin" required>
+            <option value="">Selecione</option>
+            <option value="Abatedouro Z">Abatedouro Z</option>
+            <option value="Frigorífico Aurora">Frigorífico Aurora</option>
+            <option value="Fornecedor X">Fornecedor X</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quantidade-hogcoin">Quantidade de HogCoins</label>
+          <input type="number" id="quantidade-hogcoin" name="quantidade-hogcoin" min="1" required />
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancelar" onclick="closeModal('enviar-hogcoin-modal')">Cancelar</button>
+          <button type="submit" class="btn-salvar"><i class="fas fa-arrow-right"></i> Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const producaoChart = new Chart(document.getElementById('producao-chart'), {
+      type: 'bar',
+      data: {
+        labels: ['Lote #P001', 'Lote #P002', 'Lote #P003'],
+        datasets: [{
+          label: 'Quantidade de Suínos',
+          data: [50, 30, 10],
+          backgroundColor: ['#2e7d32', '#ffca28', '#d32f2f'], // Cores do Abatedouro
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Quantidade' }
+          }
+        }
+      }
+    });
+
+    const hogcoinPriceChart = new Chart(document.getElementById('hogcoin-price-chart'), {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Fev', 'Mar'],
+        datasets: [{
+          label: 'Preço HogCoin (%)',
+          data: [1.0, 2.5, 4.8],
+          borderColor: '#ffca28',
+          backgroundColor: 'rgba(255, 202, 40, 0.2)',
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+
+    function confirmarVenda(button, vendaId) {
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirmando...';
+      button.disabled = true;
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-check"></i> Confirmado!';
+        button.style.backgroundColor = '#ffca28';
+        const statusCell = button.closest('tr').querySelector('.status');
+        statusCell.textContent = 'Concluída';
+        statusCell.className = 'status concluida';
+        statusCell.insertAdjacentHTML('afterend', '<span class="blockchain-selo"><i class="fas fa-lock"></i> Registrado na Blockchain</span>');
+        const actionCell = button.closest('.action-buttons');
+        actionCell.innerHTML = `<button class="btn-detalhes" onclick="showVendaDetails(this)"><i class="fas fa-eye"></i> Ver Detalhes</button>`;
+        updateCarteira(150, 'Recebido', 'Abatedouro Z');
+        alert(`Venda #${vendaId} confirmada com sucesso!`);
+      }, 1500);
+    }
+
+    function cancelarVenda(button, vendaId) {
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cancelando...';
+      button.disabled = true;
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-times"></i> Cancelado!';
+        button.style.backgroundColor = '#d32f2f';
+        const statusCell = button.closest('tr').querySelector('.status');
+        statusCell.textContent = 'Cancelada';
+        statusCell.className = 'status cancelada';
+        const actionCell = button.closest('.action-buttons');
+        actionCell.innerHTML = `<button class="btn-detalhes" onclick="showVendaDetails(this)"><i class="fas fa-eye"></i> Ver Detalhes</button>`;
+        alert(`Venda #${vendaId} cancelada com sucesso!`);
+      }, 1500);
+    }
+
+    function showVendaDetails(button) {
+      const row = button.closest('tr');
+      const detailsRow = row.nextElementSibling;
+      if (detailsRow && detailsRow.classList.contains('venda-detalhes')) {
+        detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
+        return;
+      }
+      const newRow = document.createElement('tr');
+      newRow.classList.add('venda-detalhes');
+      newRow.style.display = 'table-row';
+      newRow.innerHTML = `
+        <td colspan="7">
+          <div class="venda-detalhes-content">
+            <p><strong>ID:</strong> ${row.cells[0].textContent}</p>
+            <p><strong>Cliente:</strong> ${row.cells[1].textContent}</p>
+            <p><strong>Lote:</strong> ${row.cells[2].textContent}</p>
+            <p><strong>Quantidade:</strong> ${row.cells[3].textContent}</p>
+            <p><strong>Valor:</strong> ${row.cells[4].textContent}</p>
+            <p><strong>Status:</strong> ${row.cells[5].textContent}</p>
+            <button class="btn-fechar-detalhes" onclick="this.closest('tr').style.display='none'"><i class="fas fa-times"></i> Fechar</button>
+          </div>
+        </td>
+      `;
+      row.insertAdjacentElement('afterend', newRow);
+    }
+
+    function comprarItem(item, valor) {
+      if (confirm(`Deseja comprar ${item} por ${valor} HogCoins?`)) {
+        updateCarteira(-valor, 'Enviado', 'Fornecedor Marketplace');
+        alert(`Compra de ${item} por ${valor} HogCoins realizada com sucesso!`);
+      }
+    }
+
+    function showMarketplaceDetails(button) {
+      const row = button.closest('tr');
+      alert(`Detalhes do item: ${row.cells[1].textContent} - ${row.cells[2].textContent} por ${row.cells[3].textContent}`);
+    }
+
+    function openEnviarHogCoinModal() {
+      document.getElementById('enviar-hogcoin-modal').style.display = 'flex';
+    }
+
+    function enviarHogCoins(event) {
+      event.preventDefault();
+      const destinatario = document.getElementById('destinatario-hogcoin').value;
+      const quantidade = parseInt(document.getElementById('quantidade-hogcoin').value);
+      updateCarteira(-quantidade, 'Enviado', destinatario);
+      alert(`Enviado ${quantidade} HogCoins para ${destinatario}!`);
+      closeModal('enviar-hogcoin-modal');
+      document.getElementById('enviar-hogcoin-form').reset();
+    }
+
+    function updateCarteira(valor, tipo, origem) {
+      const saldoAtualElement = document.querySelector('.carteira-total:nth-child(1) p');
+      let saldoAtual = parseInt(saldoAtualElement.textContent.match(/\d+/)[0]);
+      saldoAtual += valor;
+      saldoAtualElement.innerHTML = `<i class="fas fa-coins"></i> ${saldoAtual} HogCoins`;
+
+      const historicoContainer = document.getElementById('historico-container');
+      const dataAtual = new Date().toLocaleDateString('pt-BR');
+      const novoItem = document.createElement('div');
+      novoItem.classList.add('historico-item');
+      novoItem.innerHTML = `
+        <p><i class="fas fa-arrow-${valor > 0 ? 'up' : 'down'}"></i> ${tipo}: ${Math.abs(valor)} HogCoins ${valor > 0 ? 'do' : 'para'} ${origem} - ${dataAtual}</p>
+        <span class="blockchain-selo"><i class="fas fa-lock"></i> Registrado na Blockchain</span>
+      `;
+      historicoContainer.appendChild(novoItem);
+    }
+
+    function filterProducao() {
+      const search = document.getElementById('search-producao').value.toLowerCase();
+      const statusFilter = document.getElementById('filter-status-producao').value;
+      const items = document.getElementById('producao-container').getElementsByClassName('producao-item');
+
+      for (let item of items) {
+        const lote = item.querySelector('h3').textContent.toLowerCase();
+        const status = item.querySelector('.producao-status').textContent;
+
+        const matchesSearch = lote.includes(search);
+        const matchesStatus = !statusFilter || status === statusFilter;
+
+        item.style.display = matchesSearch && matchesStatus ? '' : 'none';
+      }
+    }
+
+    function filterVendas() {
+      const search = document.getElementById('search-vendas').value.toLowerCase();
+      const statusFilter = document.getElementById('filter-status-vendas').value;
+      const rows = document.getElementById('vendas-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+      for (let row of rows) {
+        if (row.classList.contains('venda-detalhes')) continue;
+        const cliente = row.cells[1].textContent.toLowerCase();
+        const id = row.cells[0].textContent.toLowerCase();
+        const status = row.cells[5].textContent;
+
+        const matchesSearch = cliente.includes(search) || id.includes(search);
+        const matchesStatus = !statusFilter || status.includes(statusFilter);
+
+        row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+        const detailsRow = row.nextElementSibling;
+        if (detailsRow && detailsRow.classList.contains('venda-detalhes')) {
+          detailsRow.style.display = 'none';
+        }
+      }
+    }
+
+    function filterMarketplace() {
+      const search = document.getElementById('search-marketplace').value.toLowerCase();
+      const categoriaFilter = document.getElementById('filter-categoria-marketplace').value;
+      const rows = document.getElementById('marketplace-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+      for (let row of rows) {
+        const item = row.cells[1].textContent.toLowerCase();
+        const id = row.cells[0].textContent.toLowerCase();
+        const categoria = item.includes('ração') ? 'Insumos' : 'Suínos';
+
+        const matchesSearch = item.includes(search) || id.includes(search);
+        const matchesCategoria = !categoriaFilter || categoria === categoriaFilter;
+
+        row.style.display = matchesSearch && matchesCategoria ? '' : 'none';
+      }
+    }
+
+    function filterMensagens() {
+      const search = document.getElementById('search-mensagem').value.toLowerCase();
+      const statusFilter = document.getElementById('filter-status-mensagem').value;
+      const items = document.getElementById('mensagens-container').getElementsByClassName('mensagem-item');
+
+      for (let item of items) {
+        const remetente = item.querySelector('h4').textContent.toLowerCase();
+        const isUnread = item.classList.contains('unread');
+
+        const matchesSearch = remetente.includes(search);
+        const matchesStatus = !statusFilter || (statusFilter === 'unread' && isUnread) || (statusFilter === 'read' && !isUnread);
+
+        item.style.display = matchesSearch && matchesStatus ? '' : 'none';
+      }
+    }
+
+    function filterContratos() {
+      const search = document.getElementById('search-contrato').value.toLowerCase();
+      const statusFilter = document.getElementById('filter-status-contrato').value;
+      const items = document.getElementById('contratos-assinatura-container').getElementsByClassName('contrato-card');
+      for (let item of items) {
+        const abatedouro = item.querySelector('p:nth-child(2)').textContent.toLowerCase();
+        const status = item.querySelector('.status').textContent;
+        const matchesSearch = abatedouro.includes(search);
+        const matchesStatus = !statusFilter || status.includes(statusFilter);
+        item.style.display = matchesSearch && matchesStatus ? '' : 'none';
+      }
+    }
+
+    function openAtualizarProducaoModal() {
+      document.getElementById('atualizar-producao-modal').style.display = 'flex';
+    }
+
+    function atualizarProducao(event) {
+      event.preventDefault();
+      const lote = document.getElementById('lote-producao').value;
+      const quantidade = parseInt(document.getElementById('quantidade-producao').value);
+      const status = document.getElementById('status-producao').value;
+
+      const items = document.getElementById('producao-container').getElementsByClassName('producao-item');
+      for (let producaoItem of items) {
+        if (producaoItem.querySelector('h3').textContent === lote) {
+          producaoItem.querySelector('p:nth-child(2)').innerHTML = `<i class="fas fa-piggy-bank"></i> Quantidade: ${quantidade} suínos`;
+          const statusSpan = producaoItem.querySelector('.producao-status');
+          statusSpan.textContent = status;
+          statusSpan.className = `producao-status ${status === 'Pronto' ? 'pronto' : 'em-andamento'}`;
+
+          const index = producaoChart.data.labels.indexOf(lote);
+          producaoChart.data.datasets[0].data[index] = quantidade;
+          producaoChart.update();
+          break;
+        }
+      }
+
+      updateNotificacoes();
+      closeModal('atualizar-producao-modal');
+      document.getElementById('atualizar-producao-form').reset();
+      alert(`Produção do ${lote} atualizada com sucesso!`);
+    }
+
+    function openResponderModal(button, remetente) {
+      document.getElementById('responder-destinatario').value = remetente;
+      document.getElementById('responder-modal-title').textContent = `Responder Mensagem para ${remetente}`;
+      document.getElementById('responder-mensagem').value = '';
+      document.getElementById('responder-modal').style.display = 'flex';
+      button.closest('.mensagem-item').classList.remove('unread');
+      updateBadge();
+    }
+
+    function enviarResposta(event) {
+      event.preventDefault();
+      const destinatario = document.getElementById('responder-destinatario').value;
+      const mensagem = document.getElementById('responder-mensagem').value;
+      alert(`Mensagem enviada para ${destinatario}: ${mensagem}`);
+      closeModal('responder-modal');
+    }
+
+    function assinarContrato(button, contratoId) {
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Assinando...';
+      button.disabled = true;
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-signature"></i> Assinado!';
+        button.style.backgroundColor = '#ffca28';
+        const card = button.closest('.contrato-card');
+        const status = card.querySelector('.status');
+        status.textContent = 'Assinado';
+        status.className = 'status assinado';
+        status.innerHTML = '<i class="fas fa-check-circle"></i> Assinado';
+        const actions = card.querySelector('.contrato-actions');
+        actions.innerHTML = `<button class="btn-historico" onclick="showContratoHistorico(this)"><i class="fas fa-history"></i> Histórico</button>`;
+        alert(`Contrato #${contratoId} assinado com sucesso!`);
+      }, 1500);
+    }
+
+    function showContratoHistorico(button) {
+      const card = button.closest('.contrato-card');
+      const contratoId = card.querySelector('h3').textContent;
+      alert(`Histórico do ${contratoId}: Ainda em desenvolvimento.`);
+    }
+
+    function openNovoContratoModal() {
+      alert('Funcionalidade de Novo Contrato ainda em desenvolvimento.');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function updateNotificacoes() {
+      const notificacaoContainer = document.querySelector('.notificacao-container');
+      notificacaoContainer.innerHTML = '';
+      const items = document.getElementById('producao-container').getElementsByClassName('producao-item');
+      for (let item of items) {
+        const status = item.querySelector('.producao-status').textContent;
+        const lote = item.querySelector('h3').textContent;
+        const qty = parseInt(item.querySelector('p:nth-child(2)').textContent.replace(/[^0-9]/g, ''));
+        if (qty <= 10 && status === 'Em Andamento') {
+          notificacaoContainer.innerHTML += `
+            <div class="notificacao-item critico">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Produção Crítica: ${lote} - Apenas ${qty} suínos restantes!</p>
+            </div>
+          `;
+        }
+      }
+      if (document.getElementById('marketplace-table').querySelector('tbody tr td:nth-child(2)').textContent === 'Ração') {
+        const qtyRacao = parseInt(document.getElementById('marketplace-table').querySelector('tbody tr td:nth-child(3)').textContent);
+        if (qtyRacao <= 50) {
+          notificacaoContainer.innerHTML += `
+            <div class="notificacao-item baixo">
+              <i class="fas fa-exclamation-circle"></i>
+              <p>Estoque Baixo: Ração - Apenas ${qtyRacao} sacas restantes!</p>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function updateBadge() {
+      const unreadCount = document.querySelectorAll('.mensagem-item.unread').length;
+      const badge = document.querySelector('.badge');
+      badge.textContent = unreadCount;
+      badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+    }
+  </script>
+</body>
+</html>

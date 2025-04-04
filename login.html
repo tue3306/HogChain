@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - HogChain</title>
+  
+  <!-- Fonte e Ícones -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="loginstyles.css" />
+</head>
+<body>
+  <div class="login-container">
+    <!-- Logo -->
+    <div class="logo-container">
+      <h1 class="titulo">
+          <a href="index.html" style="text-decoration: none; color: inherit; cursor: pointer;">HogChain</a>
+      </h1>
+  </div>
+    
+    <!-- Slogan -->
+    <p class="slogan">Acesse a Revolução da Cadeia de Suínos</p>
+    
+    <!-- Título -->
+    <h2>Acesso ao Sistema</h2>
+    
+    <!-- Formulário -->
+    <form onsubmit="return realizarLogin(event)">
+      <div class="input-group">
+        <label for="username">Usuário</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          placeholder="Digite seu usuário"
+          required
+        />
+      </div>
+      
+      <div class="input-group">
+        <label for="password">Senha</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Digite sua senha"
+          required
+        />
+      </div>
+      
+      <!-- Link "Esqueceu sua senha?" -->
+      <div class="forgot-password">
+        <a href="#">Esqueceu sua senha?</a>
+      </div>
+      
+      <!-- Botão de Login com Spinner -->
+      <button type="submit" class="btn-login">
+        <span class="btn-text">Entrar</span>
+        <span class="spinner" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+      </button>
+      
+      <!-- Mensagem de Erro -->
+      <div class="mensagem-erro" id="erro-login"></div>
+      
+      <!-- Link "Criar Conta" -->
+      <div class="register-link">
+        <p>Não tem uma conta? <a href="register.html">Criar Conta</a></p>
+      </div>
+    </form>
+  </div>
+  
+  <script>
+    function realizarLogin(event) {
+      event.preventDefault();
+      
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const erroLogin = document.getElementById('erro-login');
+      const btnLogin = document.querySelector('.btn-login');
+      const btnText = document.querySelector('.btn-text');
+      const spinner = document.querySelector('.spinner');
+      const inputs = document.querySelectorAll('.input-group input');
+      
+      // Limpa mensagens anteriores e estilos de erro
+      erroLogin.textContent = '';
+      inputs.forEach(input => input.classList.remove('error'));
+      
+      // Validação de campos vazios
+      if (!user || !pass) {
+        erroLogin.textContent = 'Preencha todos os campos.';
+        if (!user) document.getElementById('username').classList.add('error');
+        if (!pass) document.getElementById('password').classList.add('error');
+        return false;
+      }
+      
+      // Exibe o spinner e desativa o botão
+      btnText.style.display = 'none';
+      spinner.style.display = 'inline-block';
+      btnLogin.disabled = true;
+      
+      // Simula um delay de 2 segundos para o login (para mostrar o spinner)
+      setTimeout(() => {
+        // Verificação de login
+        if (user === 'admin' && pass === '1234') {
+          window.location.href = 'dashboard_admin.html';
+        } else if (user === 'fornecedor' && pass === '1234') {
+          window.location.href = 'dashboard_fornecedor.html';
+        } else if (user === 'produtor' && pass === '1234') {
+          window.location.href = 'dashboard_produtor.html';
+        } else if (user === 'abatedouro' && pass === '1234') {
+          window.location.href = 'dashboard_abatedouro.html';
+        } else {
+          erroLogin.textContent = 'Usuário ou senha incorretos.';
+          inputs.forEach(input => input.classList.add('error'));
+        }
+        
+        // Esconde o spinner e reativa o botão
+        btnText.style.display = 'inline';
+        spinner.style.display = 'none';
+        btnLogin.disabled = false;
+      }, 2000);
+      
+      return false;
+    }
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'929369e90f2db062',t:'MTc0MzQ2MTUxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

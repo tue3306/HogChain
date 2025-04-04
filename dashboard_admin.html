@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  <link rel="stylesheet" href="dashboard_adminstyles.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h2>HogChain</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        <li><a href="#painel" class="active"><i class="fas fa-tachometer-alt"></i> Painel</a></li>
+        <li><a href="#gerenciar-suinos"><i class="fas fa-piggy-bank"></i> Gerenciar Suínos</a></li>
+        <li><a href="#usuarios"><i class="fas fa-users"></i> Usuários</a></li>
+        <li><a href="#relatorios"><i class="fas fa-file-alt"></i> Relatórios</a></li>
+        <li><a href="#configuracoes"><i class="fas fa-cog"></i> Configurações</a></li>
+        <li><a href="#transacoes"><i class="fas fa-exchange-alt"></i> Transações</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+
+  <main class="main-content">
+
+    <header class="header">
+      <h1>Dashboard Admin - HogChain</h1>
+      <p>Gerencie a cadeia produtiva de suínos com eficiência e transparência.</p>
+    </header>
+
+    <!-- SEÇÃO: Painel -->
+    <section class="dashboard-section" id="painel">
+      <h2><i class="fas fa-tachometer-alt"></i> Painel de Controle</h2>
+      <!-- Notificações -->
+      <div class="notificacao-container">
+        <div class="notificacao-item alerta">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Transação suspeita detectada: Contrato #003 - Verificar agora</p>
+        </div>
+        <div class="notificacao-item pendente">
+          <i class="fas fa-user-clock"></i>
+          <p>2 usuários pendentes de aprovação - Aprovar agora</p>
+        </div>
+      </div>
+      <!-- Overview Cards -->
+      <div class="cards-container">
+        <div class="card">
+          <i class="fas fa-piggy-bank card-icon"></i>
+          <h3>Suínos Tokenizados</h3>
+          <p>450</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-coins card-icon"></i>
+          <h3>HogCoins em Circulação</h3>
+          <p>10.000</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-wallet card-icon"></i>
+          <h3>Faturamento (Mês)</h3>
+          <p class="hogcoin-value">7.500 HogCoins <span class="hogcoin-equivalent">(R$ 75.000)</span></p>
+        </div>
+        <div class="card">
+          <i class="fas fa-shield-alt card-icon"></i>
+          <h3>Status da Blockchain</h3>
+          <p>Ativa - Última Verificação: 03/04/2025</p>
+        </div>
+      </div>
+      <!-- Charts -->
+      <div class="charts-container">
+        <div class="chart-card">
+          <h3>HogCoins por Produtor</h3>
+          <canvas id="hogcoins-produtor-chart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Volume de Transações HogCoins Diárias</h3>
+          <canvas id="transacoes-diarias-chart"></canvas>
+        </div>
+      </div>
+      <!-- Funções do Admin -->
+      <div class="admin-funcoes">
+        <h3>Funções do Admin no HogChain</h3>
+        <div class="funcoes-grid">
+          <div class="funcao-item">
+            <i class="fas fa-user-check"></i>
+            <h4>Gerencia Cadastros e Perfis</h4>
+            <p>Habilita ou desabilita produtores, fornecedores e abatedouros.</p>
+            <a href="#usuarios" class="btn-funcao"><i class="fas fa-arrow-right"></i> Ir para Usuários</a>
+          </div>
+          <div class="funcao-item">
+            <i class="fas fa-exchange-alt"></i>
+            <h4>Monitora Transações e Contratos</h4>
+            <p>Acompanha o volume de negociações, vendas e abates.</p>
+            <a href="#transacoes" class="btn-funcao"><i class="fas fa-arrow-right"></i> Ver Transações</a>
+          </div>
+          <div class="funcao-item">
+            <i class="fas fa-cogs"></i>
+            <h4>Define Parâmetros de Sistema</h4>
+            <p>Configura regras de tokenização e taxas.</p>
+            <a href="#configuracoes" class="btn-funcao"><i class="fas fa-arrow-right"></i> Ir para Configurações</a>
+          </div>
+          <div class="funcao-item">
+            <i class="fas fa-chart-line"></i>
+            <h4>Gera Relatórios e Estatísticas</h4>
+            <p>Acessa relatórios consolidados da cadeia de produção.</p>
+            <a href="#relatorios" class="btn-funcao"><i class="fas fa-arrow-right"></i> Ver Relatórios</a>
+          </div>
+          <div class="funcao-item">
+            <i class="fas fa-shield-alt"></i>
+            <h4>Mantém a Segurança e Integridade</h4>
+            <p>Assegura a coerência dos smart contracts e registros.</p>
+            <a href="#painel" class="btn-funcao"><i class="fas fa-arrow-right"></i> Ver Status da Blockchain</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: Gerenciar Suínos -->
+    <section class="dashboard-section" id="gerenciar-suinos">
+      <h2><i class="fas fa-piggy-bank"></i> Gerenciar Suínos</h2>
+      <div class="gerenciar-container">
+        <div class="gerenciar-header">
+          <h3>Lotes de Suínos Cadastrados</h3>
+          <button class="btn-adicionar" onclick="openAddLoteModal()"><i class="fas fa-plus"></i> Adicionar Lote</button>
+        </div>
+        <div class="search-filter">
+          <input type="text" id="search-lote" placeholder="Pesquisar por ID ou Produtor" onkeyup="filterLotes()">
+          <select id="filter-status-lote" onchange="filterLotes()">
+            <option value="">Filtrar por Status</option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
+          </select>
+        </div>
+        <table class="gerenciar-table" id="lotes-table">
+          <thead>
+            <tr>
+              <th>ID do Lote</th>
+              <th>Produtor</th>
+              <th>Quantidade</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#001</td>
+              <td>Fazenda São José</td>
+              <td>100 suínos</td>
+              <td>Ativo</td>
+              <td>
+                <button class="btn-visualizar" onclick="showLoteDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+                <button class="btn-editar" onclick="openEditLoteModal(this)"><i class="fas fa-edit"></i> Editar</button>
+                <button class="btn-remover" onclick="removeLote(this)"><i class="fas fa-trash"></i> Remover</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#002</td>
+              <td>Granja Boa Vista</td>
+              <td>150 suínos</td>
+              <td>Ativo</td>
+              <td>
+                <button class="btn-visualizar" onclick="showLoteDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+                <button class="btn-editar" onclick="openEditLoteModal(this)"><i class="fas fa-edit"></i> Editar</button>
+                <button class="btn-remover" onclick="removeLote(this)"><i class="fas fa-trash"></i> Remover</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: Usuários -->
+    <section class="dashboard-section" id="usuarios">
+      <h2><i class="fas fa-users"></i> Usuários</h2>
+      <div class="usuarios-container">
+        <div class="usuarios-header">
+          <h3>Lista de Usuários</h3>
+          <button class="btn-adicionar" onclick="openAddUsuarioModal()"><i class="fas fa-plus"></i> Adicionar Usuário</button>
+        </div>
+        <div class="search-filter">
+          <input type="text" id="search-usuario" placeholder="Pesquisar por Nome" onkeyup="filterUsuarios()">
+          <select id="filter-tipo-usuario" onchange="filterUsuarios()">
+            <option value="">Filtrar por Tipo</option>
+            <option value="Produtor">Produtor</option>
+            <option value="Abatedouro">Abatedouro</option>
+            <option value="Fornecedor">Fornecedor</option>
+          </select>
+          <select id="filter-status-usuario" onchange="filterUsuarios()">
+            <option value="">Filtrar por Status</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Desabilitado">Desabilitado</option>
+          </select>
+        </div>
+        <table class="usuarios-table" id="usuarios-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>José Santos</td>
+              <td>Produtor</td>
+              <td>Aprovado</td>
+              <td>
+                <button class="btn-visualizar" onclick="showUsuarioDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+                <button class="btn-aprovar" onclick="approveUsuario(this)"><i class="fas fa-check"></i> Aprovar</button>
+                <button class="btn-desabilitar" onclick="disableUsuario(this)"><i class="fas fa-ban"></i> Desabilitar</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Frigorífico Central</td>
+              <td>Abatedouro</td>
+              <td>Pendente</td>
+              <td>
+                <button class="btn-visualizar" onclick="showUsuarioDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+                <button class="btn-aprovar" onclick="approveUsuario(this)"><i class="fas fa-check"></i> Aprovar</button>
+                <button class="btn-desabilitar" onclick="disableUsuario(this)"><i class="fas fa-ban"></i> Desabilitar</button>
+              </td>
+            </tr>
+            <tr>
+              <td>AgroSuprimentos LTDA</td>
+              <td>Fornecedor</td>
+              <td>Aprovado</td>
+              <td>
+                <button class="btn-visualizar" onclick="showUsuarioDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+                <button class="btn-aprovar" onclick="approveUsuario(this)"><i class="fas fa-check"></i> Aprovar</button>
+                <button class="btn-desabilitar" onclick="disableUsuario(this)"><i class="fas fa-ban"></i> Desabilitar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: Relatórios -->
+    <section class="dashboard-section" id="relatorios">
+      <h2><i class="fas fa-file-alt"></i> Relatórios</h2>
+      <div class="relatorios-container">
+        <div class="relatorios-header">
+          <h3>Gerar Relatório</h3>
+          <button class="btn-gerar" onclick="generateReport()"><i class="fas fa-download"></i> Gerar Relatório</button>
+        </div>
+        <div class="relatorios-form">
+          <div class="form-group">
+            <label for="tipo-relatorio">Tipo de Relatório</label>
+            <select id="tipo-relatorio">
+              <option value="transacoes">Transações</option>
+              <option value="vendas">Vendas</option>
+              <option value="abates">Abates</option>
+              <option value="estoque">Estoque</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="periodo">Período</label>
+            <select id="periodo">
+              <option value="ultimo-mes">Último Mês</option>
+              <option value="ultimo-trimestre">Último Trimestre</option>
+              <option value="ultimo-ano">Último Ano</option>
+              <option value="personalizado">Personalizado</option>
+            </select>
+          </div>
+          <div class="form-group" id="custom-date-range" style="display: none;">
+            <label for="data-inicio">Data Início</label>
+            <input type="date" id="data-inicio">
+            <label for="data-fim">Data Fim</label>
+            <input type="date" id="data-fim">
+          </div>
+        </div>
+        <div class="relatorios-preview">
+          <h4>Prévia do Relatório</h4>
+          <p>Total de Transações: 50</p>
+          <p>Volume de HogCoins: 5.000</p>
+          <p>Faturamento Total: 5.000 HogCoins (R$ 50.000)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: Configurações -->
+    <section class="dashboard-section" id="configuracoes">
+      <h2><i class="fas fa-cog"></i> Configurações</h2>
+      <div class="configuracoes-container">
+        <h3>Parâmetros do Sistema</h3>
+        <form class="configuracoes-form" onsubmit="saveConfig(event)">
+          <div class="form-group">
+            <label for="taxa-transacao">Taxa de Transação (%)</label>
+            <input type="number" id="taxa-transacao" value="2" step="0.1" />
+          </div>
+          <div class="form-group">
+            <label for="proporcao-hogcoin">Proporção de HogCoins (1 HogCoin = X Reais)</label>
+            <input type="number" id="proporcao-hogcoin" value="10" />
+          </div>
+          <div class="form-group">
+            <label for="notificacao-limite">Limite de Notificação (HogCoins)</label>
+            <input type="number" id="notificacao-limite" value="1000" />
+          </div>
+          <button type="submit" class="btn-salvar"><i class="fas fa-save"></i> Salvar Configurações</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: Transações -->
+    <section class="dashboard-section" id="transacoes">
+      <h2><i class="fas fa-exchange-alt"></i> Transações</h2>
+      <div class="transacoes-container">
+        <div class="transacoes-header">
+          <h3>Lista de Transações</h3>
+          <button class="btn-adicionar" onclick="openAddTransacaoModal()"><i class="fas fa-plus"></i> Adicionar Transação</button>
+        </div>
+        <div class="search-filter">
+          <input type="text" id="search-transacao" placeholder="Pesquisar por ID ou Envolvido" onkeyup="filterTransacoes()">
+          <select id="filter-tipo-transacao" onchange="filterTransacoes()">
+            <option value="">Filtrar por Tipo</option>
+            <option value="Venda">Venda</option>
+            <option value="Abate">Abate</option>
+            <option value="Transferência">Transferência</option>
+          </select>
+        </div>
+        <table class="transacoes-table" id="transacoes-table">
+          <thead>
+            <tr>
+              <th>ID da Transação</th>
+              <th>Tipo</th>
+              <th>Envolvidos</th>
+              <th>Valor (HogCoins)</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#T001</td>
+              <td>Venda</td>
+              <td>Fazenda São José → Frigorífico Central</td>
+              <td>500</td>
+              <td>30/03/2025</td>
+              <td>
+                <button class="btn-visualizar" onclick="showTransacaoDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+                <button class="btn-remover" onclick="removeTransacao(this)"><i class="fas fa-trash"></i> Remover</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#T002</td>
+              <td>Abate</td>
+              <td>Frigorífico Central</td>
+              <td>300</td>
+              <td>31/03/2025</td>
+              <td>
+                <button class="btn-visualizar" onclick="showTransacaoDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+                <button class="btn-remover" onclick="removeTransacao(this)"><i class="fas fa-trash"></i> Remover</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para Adicionar/Editar Lote -->
+  <div class="modal" id="lote-modal">
+    <div class="modal-content">
+      <h3 id="lote-modal-title">Adicionar Lote</h3>
+      <form id="lote-form" onsubmit="saveLote(event)">
+        <div class="form-group">
+          <label for="lote-id">ID do Lote</label>
+          <input type="text" id="lote-id" required>
+        </div>
+        <div class="form-group">
+          <label for="lote-produtor">Produtor</label>
+          <input type="text" id="lote-produtor" required>
+        </div>
+        <div class="form-group">
+          <label for="lote-quantidade">Quantidade (suínos)</label>
+          <input type="number" id="lote-quantidade" required>
+        </div>
+        <div class="form-group">
+          <label for="lote-status">Status</label>
+          <select id="lote-status" required>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
+          </select>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancelar" onclick="closeModal('lote-modal')">Cancelar</button>
+          <button type="submit" class="btn-salvar"><i class="fas fa-save"></i> Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Adicionar/Editar Usuário -->
+  <div class="modal" id="usuario-modal">
+    <div class="modal-content">
+      <h3 id="usuario-modal-title">Adicionar Usuário</h3>
+      <form id="usuario-form" onsubmit="saveUsuario(event)">
+        <div class="form-group">
+          <label for="usuario-nome">Nome</label>
+          <input type="text" id="usuario-nome" required>
+        </div>
+        <div class="form-group">
+          <label for="usuario-tipo">Tipo</label>
+          <select id="usuario-tipo" required>
+            <option value="Produtor">Produtor</option>
+            <option value="Abatedouro">Abatedouro</option>
+            <option value="Fornecedor">Fornecedor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="usuario-status">Status</label>
+          <select id="usuario-status" required>
+            <option value="Pendente">Pendente</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Desabilitado">Desabilitado</option>
+          </select>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancelar" onclick="closeModal('usuario-modal')">Cancelar</button>
+          <button type="submit" class="btn-salvar"><i class="fas fa-save"></i> Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Adicionar Transação -->
+  <div class="modal" id="transacao-modal">
+    <div class="modal-content">
+      <h3>Adicionar Transação</h3>
+      <form id="transacao-form" onsubmit="saveTransacao(event)">
+        <div class="form-group">
+          <label for="transacao-id">ID da Transação</label>
+          <input type="text" id="transacao-id" required>
+        </div>
+        <div class="form-group">
+          <label for="transacao-tipo">Tipo</label>
+          <select id="transacao-tipo" required>
+            <option value="Venda">Venda</option>
+            <option value="Abate">Abate</option>
+            <option value="Transferência">Transferência</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="transacao-envolvidos">Envolvidos</label>
+          <input type="text" id="transacao-envolvidos" required>
+        </div>
+        <div class="form-group">
+          <label for="transacao-valor">Valor (HogCoins)</label>
+          <input type="number" id="transacao-valor" required>
+        </div>
+        <div class="form-group">
+          <label for="transacao-data">Data</label>
+          <input type="date" id="transacao-data" required>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancelar" onclick="closeModal('transacao-modal')">Cancelar</button>
+          <button type="submit" class="btn-salvar"><i class="fas fa-save"></i> Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Gráfico de HogCoins por Produtor (Barra)
+    const hogcoinsProdutorChart = new Chart(document.getElementById('hogcoins-produtor-chart'), {
+      type: 'bar',
+      data: {
+        labels: ['Fazenda São José', 'Granja Boa Vista', 'Fazenda Sol Nascente'],
+        datasets: [{
+          label: 'HogCoins',
+          data: [1000, 1500, 2000],
+          backgroundColor: '#007bff',
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Gráfico de Volume de Transações Diárias (Linha)
+    const transacoesDiariasChart = new Chart(document.getElementById('transacoes-diarias-chart'), {
+      type: 'line',
+      data: {
+        labels: ['25/03', '26/03', '27/03', '28/03', '29/03', '30/03', '31/03'],
+        datasets: [{
+          label: 'Transações Diárias (HogCoins)',
+          data: [50, 100, 80, 150, 120, 200, 180],
+          borderColor: '#007bff',
+          backgroundColor: 'rgba(0, 123, 255, 0.2)',
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Funções de Interatividade
+    let editingLoteRow = null;
+    let editingUsuarioRow = null;
+
+    function openAddLoteModal() {
+      document.getElementById('lote-modal-title').textContent = 'Adicionar Lote';
+      document.getElementById('lote-form').reset();
+      document.getElementById('lote-modal').style.display = 'flex';
+    }
+
+    function openEditLoteModal(button) {
+      editingLoteRow = button.parentElement.parentElement;
+      const cells = editingLoteRow.getElementsByTagName('td');
+      document.getElementById('lote-modal-title').textContent = 'Editar Lote';
+      document.getElementById('lote-id').value = cells[0].textContent;
+      document.getElementById('lote-produtor').value = cells[1].textContent;
+      document.getElementById('lote-quantidade').value = parseInt(cells[2].textContent);
+      document.getElementById('lote-status').value = cells[3].textContent;
+      document.getElementById('lote-modal').style.display = 'flex';
+    }
+
+    function saveLote(event) {
+      event.preventDefault();
+      const id = document.getElementById('lote-id').value;
+      const produtor = document.getElementById('lote-produtor').value;
+      const quantidade = document.getElementById('lote-quantidade').value;
+      const status = document.getElementById('lote-status').value;
+
+      if (editingLoteRow) {
+        editingLoteRow.cells[0].textContent = id;
+        editingLoteRow.cells[1].textContent = produtor;
+        editingLoteRow.cells[2].textContent = `${quantidade} suínos`;
+        editingLoteRow.cells[3].textContent = status;
+        editingLoteRow = null;
+      } else {
+        const table = document.getElementById('lotes-table').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
+          <td>${id}</td>
+          <td>${produtor}</td>
+          <td>${quantidade} suínos</td>
+          <td>${status}</td>
+          <td>
+            <button class="btn-visualizar" onclick="showLoteDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+            <button class="btn-editar" onclick="openEditLoteModal(this)"><i class="fas fa-edit"></i> Editar</button>
+            <button class="btn-remover" onclick="removeLote(this)"><i class="fas fa-trash"></i> Remover</button>
+          </td>
+        `;
+      }
+      closeModal('lote-modal');
+    }
+
+    function removeLote(button) {
+      if (confirm('Tem certeza que deseja remover este lote?')) {
+        button.parentElement.parentElement.remove();
+      }
+    }
+
+    function showLoteDetails(button) {
+      const row = button.parentElement.parentElement;
+      const details = row.nextElementSibling;
+      if (details && details.classList.contains('details-container')) {
+        details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        return;
+      }
+      const newDetails = document.createElement('tr');
+      newDetails.classList.add('details-container');
+      newDetails.innerHTML = `
+        <td colspan="5">
+          <div>
+            <p><strong>ID:</strong> ${row.cells[0].textContent}</p>
+            <p><strong>Produtor:</strong> ${row.cells[1].textContent}</p>
+            <p><strong>Quantidade:</strong> ${row.cells[2].textContent}</p>
+            <p><strong>Status:</strong> ${row.cells[3].textContent}</p>
+            <p><strong>Data de Cadastro:</strong> 31/03/2025</p>
+          </div>
+        </td>
+      `;
+      row.insertAdjacentElement('afterend', newDetails);
+    }
+
+    function filterLotes() {
+      const search = document.getElementById('search-lote').value.toLowerCase();
+      const statusFilter = document.getElementById('filter-status-lote').value;
+      const rows = document.getElementById('lotes-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+      for (let row of rows) {
+        if (row.classList.contains('details-container')) continue;
+        const id = row.cells[0].textContent.toLowerCase();
+        const produtor = row.cells[1].textContent.toLowerCase();
+        const status = row.cells[3].textContent;
+
+        const matchesSearch = id.includes(search) || produtor.includes(search);
+        const matchesStatus = !statusFilter || status === statusFilter;
+
+        row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+        const details = row.nextElementSibling;
+        if (details && details.classList.contains('details-container')) {
+          details.style.display = row.style.display === 'none' ? 'none' : details.style.display;
+        }
+      }
+    }
+
+    function openAddUsuarioModal() {
+      document.getElementById('usuario-modal-title').textContent = 'Adicionar Usuário';
+      document.getElementById('usuario-form').reset();
+      document.getElementById('usuario-modal').style.display = 'flex';
+    }
+
+    function saveUsuario(event) {
+      event.preventDefault();
+      const nome = document.getElementById('usuario-nome').value;
+      const tipo = document.getElementById('usuario-tipo').value;
+      const status = document.getElementById('usuario-status').value;
+
+      if (editingUsuarioRow) {
+        editingUsuarioRow.cells[0].textContent = nome;
+        editingUsuarioRow.cells[1].textContent = tipo;
+        editingUsuarioRow.cells[2].textContent = status;
+        editingUsuarioRow = null;
+      } else {
+        const table = document.getElementById('usuarios-table').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
+          <td>${nome}</td>
+          <td>${tipo}</td>
+          <td>${status}</td>
+          <td>
+            <button class="btn-visualizar" onclick="showUsuarioDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+            <button class="btn-aprovar" onclick="approveUsuario(this)"><i class="fas fa-check"></i> Aprovar</button>
+            <button class="btn-desabilitar" onclick="disableUsuario(this)"><i class="fas fa-ban"></i> Desabilitar</button>
+          </td>
+        `;
+      }
+      closeModal('usuario-modal');
+    }
+
+    function approveUsuario(button) {
+      const row = button.parentElement.parentElement;
+      row.cells[2].textContent = 'Aprovado';
+    }
+
+    function disableUsuario(button) {
+      const row = button.parentElement.parentElement;
+      row.cells[2].textContent = 'Desabilitado';
+    }
+
+    function showUsuarioDetails(button) {
+      const row = button.parentElement.parentElement;
+      const details = row.nextElementSibling;
+      if (details && details.classList.contains('details-container')) {
+        details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        return;
+      }
+      const newDetails = document.createElement('tr');
+      newDetails.classList.add('details-container');
+      newDetails.innerHTML = `
+        <td colspan="4">
+          <div>
+            <p><strong>Nome:</strong> ${row.cells[0].textContent}</p>
+            <p><strong>Tipo:</strong> ${row.cells[1].textContent}</p>
+            <p><strong>Status:</strong> ${row.cells[2].textContent}</p>
+            <p><strong>Data de Cadastro:</strong> 31/03/2025</p>
+          </div>
+        </td>
+      `;
+      row.insertAdjacentElement('afterend', newDetails);
+    }
+
+    function filterUsuarios() {
+      const search = document.getElementById('search-usuario').value.toLowerCase();
+      const tipoFilter = document.getElementById('filter-tipo-usuario').value;
+      const statusFilter = document.getElementById('filter-status-usuario').value;
+      const rows = document.getElementById('usuarios-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+      for (let row of rows) {
+        if (row.classList.contains('details-container')) continue;
+        const nome = row.cells[0].textContent.toLowerCase();
+        const tipo = row.cells[1].textContent;
+        const status = row.cells[2].textContent;
+
+        const matchesSearch = nome.includes(search);
+        const matchesTipo = !tipoFilter || tipo === tipoFilter;
+        const matchesStatus = !statusFilter || status === statusFilter;
+
+        row.style.display = matchesSearch && matchesTipo && matchesStatus ? '' : 'none';
+        const details = row.nextElementSibling;
+        if (details && details.classList.contains('details-container')) {
+          details.style.display = row.style.display === 'none' ? 'none' : details.style.display;
+        }
+      }
+    }
+
+    function generateReport() {
+      const tipo = document.getElementById('tipo-relatorio').value;
+      const periodo = document.getElementById('periodo').value;
+      alert(`Gerando relatório de ${tipo} para o período: ${periodo}`);
+    }
+
+    document.getElementById('periodo').addEventListener('change', function() {
+      const customRange = document.getElementById('custom-date-range');
+      customRange.style.display = this.value === 'personalizado' ? 'block' : 'none';
+    });
+
+    function saveConfig(event) {
+      event.preventDefault();
+      alert('Configurações salvas com sucesso!');
+    }
+
+    function openAddTransacaoModal() {
+      document.getElementById('transacao-form').reset();
+      document.getElementById('transacao-modal').style.display = 'flex';
+    }
+
+    function saveTransacao(event) {
+      event.preventDefault();
+      const id = document.getElementById('transacao-id').value;
+      const tipo = document.getElementById('transacao-tipo').value;
+      const envolvidos = document.getElementById('transacao-envolvidos').value;
+      const valor = document.getElementById('transacao-valor').value;
+      const data = document.getElementById('transacao-data').value;
+
+      const table = document.getElementById('transacoes-table').getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow();
+      newRow.innerHTML = `
+        <td>${id}</td>
+        <td>${tipo}</td>
+        <td>${envolvidos}</td>
+        <td>${valor}</td>
+        <td>${new Date(data).toLocaleDateString('pt-BR')}</td>
+        <td>
+          <button class="btn-visualizar" onclick="showTransacaoDetails(this)"><i class="fas fa-eye"></i> Visualizar</button>
+          <button class="btn-remover" onclick="removeTransacao(this)"><i class="fas fa-trash"></i> Remover</button>
+        </td>
+      `;
+      closeModal('transacao-modal');
+    }
+
+    function showTransacaoDetails(button) {
+      const row = button.parentElement.parentElement;
+      const details = row.nextElementSibling;
+      if (details && details.classList.contains('details-container')) {
+        details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        return;
+      }
+      const newDetails = document.createElement('tr');
+      newDetails.classList.add('details-container');
+      newDetails.innerHTML = `
+        <td colspan="6">
+          <div>
+            <p><strong>ID:</strong> ${row.cells[0].textContent}</p>
+            <p><strong>Tipo:</strong> ${row.cells[1].textContent}</p>
+            <p><strong>Envolvidos:</strong> ${row.cells[2].textContent}</p>
+            <p><strong>Valor:</strong> ${row.cells[3].textContent} HogCoins</p>
+            <p><strong>Data:</strong> ${row.cells[4].textContent}</p>
+          </div>
+        </td>
+      `;
+      row.insertAdjacentElement('afterend', newDetails);
+    }
+
+    function removeTransacao(button) {
+      if (confirm('Tem certeza que deseja remover esta transação?')) {
+        button.parentElement.parentElement.remove();
+      }
+    }
+
+    function filterTransacoes() {
+      const search = document.getElementById('search-transacao').value.toLowerCase();
+      const tipoFilter = document.getElementById('filter-tipo-transacao').value;
+      const rows = document.getElementById('transacoes-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+      for (let row of rows) {
+        if (row.classList.contains('details-container')) continue;
+        const id = row.cells[0].textContent.toLowerCase();
+        const envolvidos = row.cells[2].textContent.toLowerCase();
+        const tipo = row.cells[1].textContent;
+
+        const matchesSearch = id.includes(search) || envolvidos.includes(search);
+        const matchesTipo = !tipoFilter || tipo === tipoFilter;
+
+        row.style.display = matchesSearch && matchesTipo ? '' : 'none';
+        const details = row.nextElementSibling;
+        if (details && details.classList.contains('details-container')) {
+          details.style.display = row.style.display === 'none' ? 'none' : details.style.display;
+        }
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+  </script>
+</body>
+</html>
