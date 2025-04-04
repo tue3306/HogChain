@@ -130,12 +130,12 @@ body {
 }
 
 .cta.primary {
-  background: #fff;
-  color: #28a745;
+  background: #28a745; /* Alterado de #fff para #28a745 para melhor contraste */
+  color: #fff; /* Alterado de #28a745 para #fff para legibilidade */
 }
 
 .cta.primary:hover {
-  background: #f0f2f5;
+  background: #1e7e34; /* Tom mais escuro do verde para hover */
   transform: translateY(-3px);
 }
 
